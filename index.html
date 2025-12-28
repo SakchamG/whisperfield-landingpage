@@ -735,7 +735,7 @@
             </p>
             
             <div class="cta-section">
-                <a href="index2.html" class="btn btn-primary" id="enterBtn">
+                <a href="https://www.whisperfield.tech/" class="btn btn-primary" id="enterBtn">
                     <i class="fas fa-door-open"></i> Enter WhisperField
                 </a>
             </div>
@@ -852,7 +852,7 @@
         <section class="final-cta">
             <h2>Enter a Space Where Identity Doesn't Matter</h2>
             <p>No login. No tracking. No permanent records. Just honest, anonymous conversation that respects your privacy.</p>
-            <a href="index2.html" class="btn btn-primary" id="finalEnterBtn">
+            <a href="https://www.whisperfield.tech/" class="btn btn-primary" id="finalEnterBtn">
                 <i class="fas fa-door-open"></i> Enter WhisperField
             </a>
         </section>
@@ -939,6 +939,17 @@
             if (yearSpan) {
                 yearSpan.textContent = yearSpan.textContent.replace('2024', new Date().getFullYear());
             }
+            
+            // Add click event listeners for the buttons (optional, since href already handles it)
+            document.getElementById('enterBtn')?.addEventListener('click', function(e) {
+                console.log('Redirecting to WhisperField main site...');
+                // The href will handle the redirect
+            });
+            
+            document.getElementById('finalEnterBtn')?.addEventListener('click', function(e) {
+                console.log('Redirecting to WhisperField main site...');
+                // The href will handle the redirect
+            });
         });
     </script>
 </body>
