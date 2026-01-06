@@ -41,24 +41,6 @@
         }
 
         /* === BACKGROUND SCENE === */
-        .sky-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            pointer-events: none;
-        }
-
-        .night-gradient {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, #0a0a2a 0%, #1a1a3a 30%, #2d1b69 100%);
-        }
-
-        /* === UPDATED STAR EFFECT (Same as first code) === */
         #cosmic-bg {
             position: fixed;
             top: 0;
@@ -67,13 +49,6 @@
             height: 100%;
             z-index: -2;
             overflow: hidden;
-        }
-
-        .star {
-            position: absolute;
-            background-color: white;
-            border-radius: 50%;
-            animation: twinkle 3s infinite;
         }
 
         /* === ANIMATIONS === */
@@ -90,8 +65,8 @@
         }
 
         @keyframes cloudDrift {
-            0% { transform: translateX(-100px) translateY(0); }
-            100% { transform: translateX(calc(100vw + 100px)) translateY(-20px); }
+            0% { transform: translateX(-150px); }
+            100% { transform: translateX(calc(100vw + 150px)); }
         }
 
         @keyframes mountainPulse {
@@ -109,6 +84,33 @@
             50% { transform: rotate(-2deg); }
         }
 
+        /* === SKY GRADIENT === */
+        .sky-gradient {
+            position: absolute;
+            width: 100%;
+            height: 70%; /* Stars only in the sky portion */
+            background: linear-gradient(to bottom, #0a0a2a 0%, #1a1a3a 30%, #2d1b69 100%);
+            z-index: -2;
+        }
+
+        /* === STARS CONTAINER === */
+        .stars-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70%; /* Stars only in the sky, above mountains */
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
         /* === MOON === */
         .moon {
             position: absolute;
@@ -123,44 +125,68 @@
             z-index: -1;
         }
 
-        /* === CLOUDS === */
+        /* === CLOUDS CONTAINER === */
+        .clouds-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70%; /* Clouds in the sky portion */
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        /* === SMOOTH CLOUD ANIMATIONS === */
         .cloud {
             position: absolute;
             background: rgba(136, 140, 145, 0.384);
             border-radius: 90px;
             filter: blur(5px);
             z-index: -1;
+            /* Start off-screen left */
+            left: -150px;
         }
 
         .cloud-1 {
             width: 150px;
             height: 55px;
             top: 20%;
-            left: 5%;
-            animation: cloudDrift 30s infinite linear;
+            animation: cloudDrift 40s linear infinite;
         }
 
         .cloud-2 {
             width: 120px;
             height: 35px;
             top: 30%;
-            left: 70%;
-            animation: cloudDrift 40s infinite linear 10s;
+            animation: cloudDrift 45s linear infinite 10s;
         }
 
         .cloud-3 {
             width: 100px;
             height: 30px;
             top: 40%;
-            left: 25%;
-            animation: cloudDrift 35s infinite linear 5s;
+            animation: cloudDrift 50s linear infinite 20s;
+        }
+
+        .cloud-4 {
+            width: 130px;
+            height: 45px;
+            top: 25%;
+            animation: cloudDrift 42s linear infinite 15s;
+        }
+
+        .cloud-5 {
+            width: 90px;
+            height: 25px;
+            top: 35%;
+            animation: cloudDrift 48s linear infinite 5s;
         }
 
         /* === MOUNTAINS === */
         .mountains {
             position: absolute;
             bottom: 0;
-            width: 350%;
+            width: 100%;
             height: 550px;
             background: linear-gradient(to top, #1a1a2e, #16213e);
             clip-path: polygon(0% 100%, 2% 75%, 5% 85%, 8% 65%, 12% 90%, 16% 70%, 20% 100%, 25% 80%, 30% 95%, 35% 75%, 40% 100%, 50% 85%, 60% 100%, 65% 90%, 70% 95%, 75% 80%, 80% 100%, 85% 88%, 90% 92%, 95% 85%, 100% 100%);
@@ -626,6 +652,11 @@
             .final-cta h2 {
                 font-size: 1.8rem;
             }
+            
+            /* Adjust mountain height on mobile */
+            .mountains {
+                height: 350px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -642,18 +673,42 @@
                 flex-direction: column;
                 gap: 15px;
             }
+            
+            .mountains {
+                height: 300px;
+            }
+            
+            .sky-gradient,
+            .stars-container,
+            .clouds-container {
+                height: 65%;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Background Scene - Using same cosmic background as first code -->
+    <!-- Background Scene -->
     <div id="cosmic-bg">
+        <!-- Sky with gradient -->
+        <div class="sky-gradient"></div>
+        
+        <!-- Stars container (only in sky) -->
+        <div class="stars-container" id="stars-container"></div>
+        
+        <!-- Moon -->
         <div class="moon"></div>
+        
+        <!-- Clouds container (only in sky) -->
+        <div class="clouds-container">
+            <div class="cloud cloud-1"></div>
+            <div class="cloud cloud-2"></div>
+            <div class="cloud cloud-3"></div>
+            <div class="cloud cloud-4"></div>
+            <div class="cloud cloud-5"></div>
+        </div>
+        
+        <!-- Mountains -->
         <div class="mountains"></div>
-        <!-- Clouds are kept from original design -->
-        <div class="cloud cloud-1"></div>
-        <div class="cloud cloud-2"></div>
-        <div class="cloud cloud-3"></div>
         <div class="mountain-glow"></div>
     </div>
 
@@ -805,24 +860,37 @@
     </div>
 
     <script>
-        // Create cosmic background stars (same as first code)
+        // Create cosmic background stars (only in the sky portion)
         function initCosmicBackground() {
-            const bg = document.getElementById('cosmic-bg');
+            const starsContainer = document.getElementById('stars-container');
+            
+            // Clear any existing stars
+            starsContainer.innerHTML = '';
+            
+            // Create 150 stars
             for (let i = 0; i < 150; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
-                star.style.width = `${Math.random() * 3 + 1}px`;
-                star.style.height = star.style.width;
+                
+                // Random size between 1-4px
+                const size = Math.random() * 3 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // Random position within the sky (only top 70% of screen)
                 star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 70}%`; // Only in sky portion
+                
+                // Random opacity and animation
                 star.style.opacity = Math.random() * 0.5 + 0.2;
                 star.style.animationDelay = `${Math.random() * 5}s`;
                 star.style.animationDuration = `${Math.random() * 4 + 2}s`;
-                bg.appendChild(star);
+                
+                starsContainer.appendChild(star);
             }
         }
 
-        // Add subtle scroll animations
+        // Add smooth scroll animations
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -837,7 +905,7 @@
             });
         }, observerOptions);
 
-        // Initialize
+        // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize cosmic background
             initCosmicBackground();
@@ -867,6 +935,12 @@
             document.getElementById('finalEnterBtn')?.addEventListener('click', function(e) {
                 console.log('Redirecting to WhisperField main site...');
             });
+        });
+
+        // Handle window resize to maintain stars only in sky
+        window.addEventListener('resize', function() {
+            // Recreate stars to ensure they stay in sky portion
+            initCosmicBackground();
         });
     </script>
 </body>
