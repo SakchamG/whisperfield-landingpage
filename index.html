@@ -58,74 +58,58 @@
             background: linear-gradient(to bottom, #0a0a2a 0%, #1a1a3a 30%, #2d1b69 100%);
         }
 
-       .stars {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    /* Base layer - static subtle stars */
-    background-image: 
-        radial-gradient(1px 1px at 20px 30px, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(1px 1px at 60px 90px, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(1px 1px at 120px 40px, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(1px 1px at 180px 150px, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(1px 1px at 240px 80px, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(1px 1px at 280px 120px, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(1px 1px at 320px 60px, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(1px 1px at 380px 180px, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(1px 1px at 420px 100px, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(1px 1px at 460px 140px, rgba(255, 255, 255, 0.8), transparent);
-    background-repeat: repeat;
-    background-size: 500px 500px;
-}
+        /* === UPDATED STAR EFFECT (Same as first code) === */
+        #cosmic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
 
-.stars::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    /* Twinkling layer 1 - medium stars */
-    background-image: 
-        radial-gradient(2px 2px at 40px 60px, rgba(255, 255, 255, 0.9), transparent),
-        radial-gradient(2px 2px at 100px 30px, rgba(255, 255, 255, 0.9), transparent),
-        radial-gradient(2px 2px at 160px 100px, rgba(255, 255, 255, 0.9), transparent),
-        radial-gradient(2px 2px at 220px 50px, rgba(255, 255, 255, 0.9), transparent),
-        radial-gradient(2px 2px at 300px 160px, rgba(255, 255, 255, 0.9), transparent),
-        radial-gradient(2px 2px at 360px 90px, rgba(255, 255, 255, 0.9), transparent),
-        radial-gradient(2px 2px at 440px 130px, rgba(255, 255, 255, 0.9), transparent);
-    background-repeat: repeat;
-    background-size: 500px 500px;
-    animation: starTwinkle 6s infinite ease-in-out;
-    opacity: 0;
-}
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
 
-.stars::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        radial-gradient(3px 3px at 80px 150px, rgba(255, 255, 255, 1), transparent),
-        radial-gradient(3px 3px at 140px 70px, rgba(255, 255, 255, 1), transparent),
-        radial-gradient(3px 3px at 200px 120px, rgba(255, 255, 255, 1), transparent),
-        radial-gradient(3px 3px at 260px 40px, rgba(255, 255, 255, 1), transparent),
-        radial-gradient(3px 3px at 340px 180px, rgba(255, 255, 255, 1), transparent),
-        radial-gradient(3px 3px at 400px 100px, rgba(255, 255, 255, 1), transparent);
-    background-repeat: repeat;
-    background-size: 500px 500px;
-    animation: starTwinkle 8s infinite ease-in-out 2s;
-    opacity: 0;
-}
+        /* === ANIMATIONS === */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
 
-/* Individual twinkling stars */
-.twinkling-star {
-    position: absolute;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 50%;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-    animation: starPulse var(--duration) infinite ease-in-out var(--delay);
-}
+        @keyframes moonFloat {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(0) translateX(20px); }
+            75% { transform: translateY(20px) translateX(10px); }
+        }
 
+        @keyframes cloudDrift {
+            0% { transform: translateX(-100px) translateY(0); }
+            100% { transform: translateX(calc(100vw + 100px)) translateY(-20px); }
+        }
 
+        @keyframes mountainPulse {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.6; }
+        }
+
+        @keyframes mailboxGlow {
+            0% { box-shadow: 0 10px 30px rgba(231, 48, 176, 0.63); }
+            100% { box-shadow: 0 10px 30px rgba(157, 78, 221, 0.2); }
+        }
+
+        @keyframes lidBreathe {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-2deg); }
+        }
+
+        /* === MOON === */
         .moon {
             position: absolute;
             top: 10%;
@@ -136,13 +120,16 @@
             border-radius: 50%;
             box-shadow: 0 0 40px rgba(255, 255, 255, 0.7);
             animation: moonFloat 20s infinite ease-in-out;
+            z-index: -1;
         }
 
+        /* === CLOUDS === */
         .cloud {
             position: absolute;
             background: rgba(136, 140, 145, 0.384);
             border-radius: 90px;
             filter: blur(5px);
+            z-index: -1;
         }
 
         .cloud-1 {
@@ -169,13 +156,15 @@
             animation: cloudDrift 35s infinite linear 5s;
         }
 
+        /* === MOUNTAINS === */
         .mountains {
             position: absolute;
-            bottom: -0;
+            bottom: 0;
             width: 350%;
             height: 550px;
             background: linear-gradient(to top, #1a1a2e, #16213e);
             clip-path: polygon(0% 100%, 2% 75%, 5% 85%, 8% 65%, 12% 90%, 16% 70%, 20% 100%, 25% 80%, 30% 95%, 35% 75%, 40% 100%, 50% 85%, 60% 100%, 65% 90%, 70% 95%, 75% 80%, 80% 100%, 85% 88%, 90% 92%, 95% 85%, 100% 100%);
+            z-index: -1;
         }
 
         .mountain-glow {
@@ -186,6 +175,7 @@
             background: linear-gradient(to top, transparent 70%, rgba(157, 78, 221, 0.08));
             clip-path: polygon(0% 100%, 2% 75%, 5% 85%, 8% 65%, 12% 90%, 16% 70%, 20% 100%, 25% 80%, 30% 95%, 35% 75%, 40% 100%, 50% 85%, 60% 100%, 65% 90%, 70% 95%, 75% 80%, 80% 100%, 85% 88%, 90% 92%, 95% 85%, 100% 100%);
             animation: mountainPulse 30s infinite alternate;
+            z-index: -1;
         }
 
         /* === MAIN CONTAINER === */
@@ -587,62 +577,6 @@
             opacity: 0.7;
         }
 
-        /* === ANIMATIONS === */
-        @keyframes starTwinkle {
-        0%, 100% { 
-            opacity: 0; 
-            transform: scale(0.95);
-             }
-        20%, 80% { 
-            opacity: 0.7; 
-            transform: scale(1);
-             }
-        50% { 
-            opacity: 1; 
-            transform: scale(1.05);
-            }
-         }
-
-        @keyframes starPulse {
-            0%, 100% { 
-                opacity: 0.2; 
-                transform: scale(0.8);
-            }
-            30%, 70% { 
-                opacity: 0.6; 
-                transform: scale(1);
-            }
-            50% { 
-                opacity: 1; 
-                transform: scale(1.2);
-                box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
-            }
-        }
-        @keyframes moonFloat {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(2deg); }
-        }
-
-        @keyframes cloudDrift {
-            0% { transform: translateX(-100px) translateY(0); }
-            100% { transform: translateX(calc(100vw + 100px)) translateY(-20px); }
-        }
-
-        @keyframes mountainPulse {
-            0% { opacity: 0.3; }
-            100% { opacity: 0.6; }
-        }
-
-        @keyframes mailboxGlow {
-            0% { box-shadow: 0 10px 30px rgba(231, 48, 176, 0.63); }
-            100% { box-shadow: 0 10px 30px rgba(157, 78, 221, 0.2); }
-        }
-
-        @keyframes lidBreathe {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(-2deg); }
-        }
-
         /* === RESPONSIVE === */
         @media (max-width: 768px) {
             .logo {
@@ -712,15 +646,14 @@
     </style>
 </head>
 <body>
-    <!-- Background Scene -->
-    <div class="sky-container">
-        <div class="night-gradient"></div>
-        <div class="stars"></div>
+    <!-- Background Scene - Using same cosmic background as first code -->
+    <div id="cosmic-bg">
         <div class="moon"></div>
+        <div class="mountains"></div>
+        <!-- Clouds are kept from original design -->
         <div class="cloud cloud-1"></div>
         <div class="cloud cloud-2"></div>
         <div class="cloud cloud-3"></div>
-        <div class="mountains"></div>
         <div class="mountain-glow"></div>
     </div>
 
@@ -872,39 +805,22 @@
     </div>
 
     <script>
-        // Create twinkling stars
-        document.addEventListener('DOMContentLoaded', function() {
-            const starsContainer = document.querySelector('.stars');
-            if (!starsContainer) return;
-            
-            const starCount = 15;
-            
-            for (let i = 0; i < starCount; i++) {
+        // Create cosmic background stars (same as first code)
+        function initCosmicBackground() {
+            const bg = document.getElementById('cosmic-bg');
+            for (let i = 0; i < 150; i++) {
                 const star = document.createElement('div');
-                star.className = 'twinkling-star';
-                
-                const left = Math.random() * 100;
-                const top = Math.random() * 80;
-                const size = Math.random() * 3 + 1;
-                const duration = Math.random() * 4 + 2;
-                const delay = Math.random() * 5;
-                
-                star.style.cssText = `
-                    width: ${size}px;
-                    height: ${size}px;
-                    left: ${left}vw;
-                    top: ${top}vh;
-                    --duration: ${duration}s;
-                    --delay: ${delay}s;
-                `;
-                
-                if (Math.random() > 0.7) {
-                    star.style.animation += ', starShimmer ' + (duration + 1) + 's infinite ' + (delay + 1) + 's';
-                }
-                
-                starsContainer.appendChild(star);
+                star.className = 'star';
+                star.style.width = `${Math.random() * 3 + 1}px`;
+                star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.opacity = Math.random() * 0.5 + 0.2;
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                star.style.animationDuration = `${Math.random() * 4 + 2}s`;
+                bg.appendChild(star);
             }
-        });
+        }
 
         // Add subtle scroll animations
         const observerOptions = {
@@ -921,16 +837,19 @@
             });
         }, observerOptions);
 
-        // Observe all sections for fade-in effect
-        document.querySelectorAll('section, .trust-symbol').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(el);
-        });
-
         // Initialize
-        window.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize cosmic background
+            initCosmicBackground();
+            
+            // Observe all sections for fade-in effect
+            document.querySelectorAll('section, .trust-symbol').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+
             console.log('WhisperField — Echoes Don\'t Judge');
             console.log('A project by skmetaverse');
             
@@ -940,15 +859,13 @@
                 yearSpan.textContent = yearSpan.textContent.replace('2024', new Date().getFullYear());
             }
             
-            // Add click event listeners for the buttons (optional, since href already handles it)
+            // Add click event listeners for the buttons
             document.getElementById('enterBtn')?.addEventListener('click', function(e) {
                 console.log('Redirecting to WhisperField main site...');
-                // The href will handle the redirect
             });
             
             document.getElementById('finalEnterBtn')?.addEventListener('click', function(e) {
                 console.log('Redirecting to WhisperField main site...');
-                // The href will handle the redirect
             });
         });
     </script>
