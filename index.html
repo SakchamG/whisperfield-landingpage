@@ -30,6 +30,12 @@
             --border: rgba(157, 78, 221, 0.2);
         }
 
+        html {
+            -webkit-text-size-adjust: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
         body {
             font-family: 'Courier Prime', 'Courier New', monospace;
             background-color: var(--bg-dark);
@@ -38,9 +44,16 @@
             overflow-x: hidden;
             min-height: 100vh;
             position: relative;
+            /* FIX: Enable hardware acceleration for smooth scrolling */
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-perspective: 1000;
+            perspective: 1000;
         }
 
-        /* === BACKGROUND SCENE === */
+        /* === FIXED: BACKGROUND SCENE WITH PERFORMANCE OPTIMIZATION === */
         .sky-container {
             position: fixed;
             top: 0;
@@ -49,6 +62,10 @@
             height: 100%;
             z-index: -2;
             pointer-events: none;
+            /* FIX: Enable GPU acceleration */
+            will-change: transform;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
         }
 
         .night-gradient {
@@ -56,9 +73,11 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(to bottom, #0a0a2a 0%, #1a1a3a 30%, #2d1b69 100%);
+            /* FIX: Prevent repaints on scroll */
+            will-change: opacity;
         }
 
-        /* === UPDATED STAR EFFECT === */
+        /* === FIXED: COSMIC BACKGROUND WITH SCROLL PERFORMANCE === */
         #cosmic-bg {
             position: fixed;
             top: 0;
@@ -67,6 +86,12 @@
             height: 100%;
             z-index: -2;
             overflow: hidden;
+            /* FIX: Enable hardware acceleration */
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            will-change: transform;
+            /* FIX: Create a stacking context */
+            isolation: isolate;
         }
 
         .star {
@@ -74,11 +99,13 @@
             background-color: white;
             border-radius: 50%;
             animation: twinkle 3s infinite;
-            /* Stars will now only appear above mountains */
-            z-index: -1;
+            /* FIX: Stars should be GPU accelerated */
+            will-change: transform, opacity;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
         }
 
-        /* === ANIMATIONS === */
+        /* === OPTIMIZED ANIMATIONS FOR SMOOTH SCROLLING === */
         @keyframes twinkle {
             0%, 100% { opacity: 0.3; }
             50% { opacity: 1; }
@@ -91,7 +118,7 @@
             75% { transform: translateY(20px) translateX(10px); }
         }
 
-        /* UPDATED CLOUD ANIMATION - smooth continuous flow */
+        /* FIXED: CLOUD ANIMATION - optimized */
         @keyframes cloudDrift {
             0% {
                 transform: translateX(-200px);
@@ -124,7 +151,7 @@
             50% { transform: rotate(-2deg); }
         }
 
-        /* === MOON === */
+        /* === MOON - OPTIMIZED === */
         .moon {
             position: absolute;
             top: 10%;
@@ -135,18 +162,25 @@
             border-radius: 50%;
             box-shadow: 0 0 40px rgba(255, 255, 255, 0.7);
             animation: moonFloat 20s infinite ease-in-out;
-            /* Moon should be above stars */
             z-index: 0;
+            /* FIX: Optimize for scrolling */
+            will-change: transform;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
         }
 
-        /* === CLOUDS === */
+        /* === FIXED: CLOUDS WITH BETTER PERFORMANCE === */
         .cloud {
             position: absolute;
             background: rgba(136, 140, 145, 0.384);
             border-radius: 90px;
             filter: blur(5px);
-            /* Clouds above mountains but below moon */
             z-index: -1;
+            /* FIX: Optimize for smooth scrolling */
+            will-change: transform;
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            /* FIX: Reduce blur on mobile for performance */
         }
 
         .cloud-1 {
@@ -170,16 +204,33 @@
             animation: cloudDrift 45s infinite linear 5s;
         }
 
-        /* === MOUNTAINS === */
+        /* === FIXED: MOUNTAINS - MAJOR OPTIMIZATION === */
+        .mountains-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 550px;
+            z-index: -1;
+            /* FIX: Enable hardware acceleration */
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            will-change: transform;
+            /* FIX: Create a new stacking context */
+            isolation: isolate;
+            overflow: hidden;
+        }
+
         .mountains {
             position: absolute;
             bottom: 0;
-            width: 350%;
+            width: 100%;
             height: 550px;
             background: linear-gradient(to top, #1a1a2e, #16213e);
             clip-path: polygon(0% 100%, 2% 75%, 5% 85%, 8% 65%, 12% 90%, 16% 70%, 20% 100%, 25% 80%, 30% 95%, 35% 75%, 40% 100%, 50% 85%, 60% 100%, 65% 90%, 70% 95%, 75% 80%, 80% 100%, 85% 88%, 90% 92%, 95% 85%, 100% 100%);
-            /* Mountains should be above stars */
-            z-index: 0;
+            /* FIX: Reduce paint area */
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
 
         .mountain-glow {
@@ -191,6 +242,8 @@
             clip-path: polygon(0% 100%, 2% 75%, 5% 85%, 8% 65%, 12% 90%, 16% 70%, 20% 100%, 25% 80%, 30% 95%, 35% 75%, 40% 100%, 50% 85%, 60% 100%, 65% 90%, 70% 95%, 75% 80%, 80% 100%, 85% 88%, 90% 92%, 95% 85%, 100% 100%);
             animation: mountainPulse 30s infinite alternate;
             z-index: 0;
+            /* FIX: Optimize animation */
+            will-change: opacity;
         }
 
         /* === MAIN CONTAINER === */
@@ -200,6 +253,9 @@
             padding: 40px 20px;
             position: relative;
             z-index: 1;
+            /* FIX: Enable hardware acceleration for smooth scrolling */
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
         }
 
         /* === HERO SECTION === */
@@ -592,7 +648,7 @@
             opacity: 0.7;
         }
 
-        /* === RESPONSIVE === */
+        /* === FIXED: MOBILE-SPECIFIC OPTIMIZATIONS === */
         @media (max-width: 768px) {
             .logo {
                 font-size: 3rem;
@@ -642,9 +698,32 @@
                 font-size: 1.8rem;
             }
             
-            /* Adjust mountain size on mobile */
+            /* FIX: Mobile-specific performance optimizations */
+            .mountains-container {
+                height: 400px;
+            }
+            
             .mountains {
                 height: 400px;
+            }
+            
+            .mountain-glow {
+                height: 180px;
+            }
+            
+            /* FIX: Reduce blur effects on mobile for better performance */
+            .cloud {
+                filter: blur(3px);
+            }
+            
+            /* FIX: Reduce animation complexity on mobile */
+            .moon {
+                animation-duration: 30s;
+            }
+            
+            /* FIX: Improve scrolling performance on mobile */
+            body {
+                -webkit-overflow-scrolling: touch;
             }
         }
 
@@ -663,8 +742,65 @@
                 gap: 15px;
             }
             
+            /* FIX: Further mobile optimizations */
+            .mountains-container {
+                height: 350px;
+            }
+            
             .mountains {
                 height: 350px;
+            }
+            
+            .mountain-glow {
+                height: 150px;
+            }
+            
+            /* FIX: Reduce star count on very small devices */
+            .star {
+                display: none;
+            }
+            
+            .star:nth-child(odd) {
+                display: block;
+            }
+            
+            /* FIX: Simplify animations */
+            .cloud {
+                animation-duration: 60s !important;
+            }
+        }
+
+        /* === FIX: REDUCE MOTION PREFERENCE === */
+        @media (prefers-reduced-motion: reduce) {
+            .star,
+            .cloud,
+            .moon,
+            .mountain-glow,
+            .mailbox,
+            .mailbox-lid {
+                animation-duration: 0s !important;
+                animation-iteration-count: 1 !important;
+            }
+            
+            .trust-card:hover,
+            .topic-chip:hover,
+            .btn:hover {
+                transform: none !important;
+            }
+        }
+
+        /* === FIX: TOUCH DEVICE OPTIMIZATIONS === */
+        @media (hover: none) and (pointer: coarse) {
+            .trust-card:hover,
+            .topic-chip:hover,
+            .btn:hover {
+                transform: none !important;
+            }
+            
+            .trust-card:active,
+            .topic-chip:active,
+            .btn:active {
+                transform: translateY(-2px) !important;
             }
         }
     </style>
@@ -673,9 +809,12 @@
     <!-- Background Scene -->
     <div id="cosmic-bg">
         <div class="moon"></div>
-        <!-- Clouds will be added by JavaScript for better control -->
-        <div class="mountains"></div>
-        <div class="mountain-glow"></div>
+        <!-- Clouds will be added by JavaScript -->
+        <!-- Mountains in a separate container for better performance -->
+        <div class="mountains-container">
+            <div class="mountains"></div>
+            <div class="mountain-glow"></div>
+        </div>
     </div>
 
     <!-- Main Content -->
@@ -826,12 +965,19 @@
     </div>
 
     <script>
-        // Create cosmic background stars - now only above the mountains
+        // FIXED: Optimized star generation with performance improvements
         function initCosmicBackground() {
             const bg = document.getElementById('cosmic-bg');
             const mountainHeight = 550; // Approximate height of mountains
             
-            for (let i = 0; i < 150; i++) {
+            // FIX: Reduce star count on mobile for better performance
+            const isMobile = window.innerWidth <= 768;
+            const starCount = isMobile ? 50 : 150;
+            
+            // FIX: Create a document fragment to reduce DOM manipulation
+            const fragment = document.createDocumentFragment();
+            
+            for (let i = 0; i < starCount; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
                 
@@ -844,65 +990,114 @@
                 star.style.left = `${Math.random() * 100}%`;
                 
                 // Calculate vertical position - only above mountains
-                // Mountain occupies bottom 550px, so stars go in top (windowHeight - 550) area
                 const windowHeight = window.innerHeight;
                 const starAreaHeight = windowHeight - mountainHeight;
                 const starTop = Math.random() * Math.min(starAreaHeight, windowHeight * 0.7);
                 
                 star.style.top = `${starTop}px`;
-                
-                // Some stars can appear on the moon too
                 star.style.opacity = Math.random() * 0.5 + 0.2;
                 star.style.animationDelay = `${Math.random() * 5}s`;
                 star.style.animationDuration = `${Math.random() * 4 + 2}s`;
-                bg.appendChild(star);
+                
+                fragment.appendChild(star);
             }
+            
+            bg.appendChild(fragment);
         }
 
-        // Create smooth flowing clouds
+        // FIXED: Optimized cloud initialization
         function initClouds() {
             const bg = document.getElementById('cosmic-bg');
             
             // Remove any existing clouds
             document.querySelectorAll('.cloud').forEach(cloud => cloud.remove());
             
-            // Create 3 clouds with different properties
+            // FIX: Reduce cloud count on mobile
+            const isMobile = window.innerWidth <= 768;
+            const cloudCount = isMobile ? 2 : 3;
+            
             const cloudData = [
                 { width: 150, height: 55, top: '20%', duration: 40, delay: 0 },
                 { width: 120, height: 35, top: '30%', duration: 50, delay: 10 },
                 { width: 100, height: 30, top: '40%', duration: 45, delay: 5 }
             ];
             
-            cloudData.forEach((cloud, index) => {
+            // FIX: Create document fragment
+            const fragment = document.createDocumentFragment();
+            
+            for (let i = 0; i < cloudCount; i++) {
+                const cloud = cloudData[i];
                 const cloudEl = document.createElement('div');
-                cloudEl.className = `cloud cloud-${index + 1}`;
+                cloudEl.className = `cloud cloud-${i + 1}`;
                 cloudEl.style.width = `${cloud.width}px`;
                 cloudEl.style.height = `${cloud.height}px`;
                 cloudEl.style.top = cloud.top;
-                cloudEl.style.animation = `cloudDrift ${cloud.duration}s infinite linear ${cloud.delay}s`;
                 
-                // Add some visual variation
+                // FIX: Slow down animations on mobile for better performance
+                const duration = isMobile ? cloud.duration * 1.5 : cloud.duration;
+                cloudEl.style.animation = `cloudDrift ${duration}s infinite linear ${cloud.delay}s`;
+                
                 cloudEl.style.backgroundColor = `rgba(136, 140, 145, ${0.3 + Math.random() * 0.2})`;
-                cloudEl.style.filter = `blur(${4 + Math.random() * 3}px)`;
+                cloudEl.style.filter = `blur(${isMobile ? 3 : 4 + Math.random() * 3}px)`;
                 
-                bg.appendChild(cloudEl);
-            });
+                fragment.appendChild(cloudEl);
+            }
+            
+            bg.appendChild(fragment);
         }
 
-        // Add subtle scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+        // FIXED: Debounced resize handler with performance optimizations
+        let resizeTimeout;
+        function handleResize() {
+            clearTimeout(resizeTimeout);
+            
+            // FIX: Throttle resize events for mobile performance
+            resizeTimeout = setTimeout(function() {
+                // Update mountain height based on screen size
+                const mountainsContainer = document.querySelector('.mountains-container');
+                const mountains = document.querySelector('.mountains');
+                const mountainGlow = document.querySelector('.mountain-glow');
+                
+                if (window.innerWidth <= 480) {
+                    mountainsContainer.style.height = '350px';
+                    mountains.style.height = '350px';
+                    mountainGlow.style.height = '150px';
+                } else if (window.innerWidth <= 768) {
+                    mountainsContainer.style.height = '400px';
+                    mountains.style.height = '400px';
+                    mountainGlow.style.height = '180px';
+                } else {
+                    mountainsContainer.style.height = '550px';
+                    mountains.style.height = '550px';
+                    mountainGlow.style.height = '250px';
                 }
-            });
-        }, observerOptions);
+                
+                // Regenerate stars and clouds only if really needed
+                if (!window.resizeStarsGenerated || window.innerWidth < 768) {
+                    // Remove old stars and clouds
+                    document.querySelectorAll('.star').forEach(star => star.remove());
+                    document.querySelectorAll('.cloud').forEach(cloud => cloud.remove());
+                    
+                    initCosmicBackground();
+                    initClouds();
+                    window.resizeStarsGenerated = true;
+                }
+            }, 250);
+        }
+
+        // FIXED: Optimized scroll handling
+        let scrollTimeout;
+        function handleScroll() {
+            // Clear any existing timeout
+            clearTimeout(scrollTimeout);
+            
+            // FIX: Throttle scroll events for mobile performance
+            scrollTimeout = setTimeout(function() {
+                // Only update animations if needed
+                // For this site, we don't need to do anything on scroll
+                // The fixed background elements handle themselves
+            }, 100);
+        }
 
         // Initialize everything
         document.addEventListener('DOMContentLoaded', function() {
@@ -910,28 +1105,12 @@
             initCosmicBackground();
             initClouds();
             
-            // Handle window resize - regenerate stars and clouds for proper positioning
-            let resizeTimeout;
-            window.addEventListener('resize', function() {
-                clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(function() {
-                    // Remove old stars and clouds
-                    document.querySelectorAll('.star').forEach(star => star.remove());
-                    initCosmicBackground();
-                    initClouds();
-                }, 250);
-            });
+            // FIX: Add optimized event listeners
+            window.addEventListener('resize', handleResize);
+            window.addEventListener('scroll', handleScroll);
             
-            // Observe all sections for fade-in effect
-            document.querySelectorAll('section, .trust-symbol').forEach(el => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(20px)';
-                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(el);
-            });
-
-            console.log('WhisperField — Echoes Don\'t Judge');
-            console.log('A project by skmetaverse');
+            // FIX: Initial mountain height setup
+            handleResize();
             
             // Set current year in footer
             const yearSpan = document.querySelector('.copyright');
@@ -939,7 +1118,7 @@
                 yearSpan.textContent = yearSpan.textContent.replace('2024', new Date().getFullYear());
             }
             
-            // Add click event listeners for the buttons
+            // Add click event listeners
             document.getElementById('enterBtn')?.addEventListener('click', function(e) {
                 console.log('Redirecting to WhisperField main site...');
             });
@@ -947,6 +1126,15 @@
             document.getElementById('finalEnterBtn')?.addEventListener('click', function(e) {
                 console.log('Redirecting to WhisperField main site...');
             });
+
+            console.log('WhisperField — Echoes Don\'t Judge');
+            console.log('A project by skmetaverse');
+        });
+
+        // FIX: Clean up event listeners on page unload
+        window.addEventListener('beforeunload', function() {
+            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('scroll', handleScroll);
         });
     </script>
 </body>
