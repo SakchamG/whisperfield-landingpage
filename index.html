@@ -31,9 +31,8 @@
         }
 
         html {
-            -webkit-text-size-adjust: 100%;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
         body {
@@ -44,28 +43,26 @@
             overflow-x: hidden;
             min-height: 100vh;
             position: relative;
-            /* FIX: Enable hardware acceleration for smooth scrolling */
+            /* Force hardware acceleration for smoother scrolling */
             -webkit-transform: translateZ(0);
             transform: translateZ(0);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            -webkit-perspective: 1000;
-            perspective: 1000;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* === FIXED: BACKGROUND SCENE WITH PERFORMANCE OPTIMIZATION === */
-        .sky-container {
+        /* === BACKGROUND SCENE - FIXED === */
+        #cosmic-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -2;
-            pointer-events: none;
-            /* FIX: Enable GPU acceleration */
+            z-index: -1;
+            overflow: hidden;
+            /* Isolate this layer to prevent repaints during scroll */
             will-change: transform;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         .night-gradient {
@@ -73,39 +70,21 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(to bottom, #0a0a2a 0%, #1a1a3a 30%, #2d1b69 100%);
-            /* FIX: Prevent repaints on scroll */
-            will-change: opacity;
         }
 
-        /* === FIXED: COSMIC BACKGROUND WITH SCROLL PERFORMANCE === */
-        #cosmic-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            overflow: hidden;
-            /* FIX: Enable hardware acceleration */
-            -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-            will-change: transform;
-            /* FIX: Create a stacking context */
-            isolation: isolate;
-        }
-
+        /* === FIXED STAR EFFECT - OPTIMIZED === */
         .star {
             position: absolute;
             background-color: white;
             border-radius: 50%;
             animation: twinkle 3s infinite;
-            /* FIX: Stars should be GPU accelerated */
+            /* Force GPU rendering for stars */
             will-change: transform, opacity;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
-        /* === OPTIMIZED ANIMATIONS FOR SMOOTH SCROLLING === */
+        /* === ANIMATIONS - OPTIMIZED === */
         @keyframes twinkle {
             0%, 100% { opacity: 0.3; }
             50% { opacity: 1; }
@@ -118,7 +97,7 @@
             75% { transform: translateY(20px) translateX(10px); }
         }
 
-        /* FIXED: CLOUD ANIMATION - optimized */
+        /* OPTIMIZED CLOUD ANIMATION - GPU accelerated */
         @keyframes cloudDrift {
             0% {
                 transform: translateX(-200px);
@@ -162,88 +141,54 @@
             border-radius: 50%;
             box-shadow: 0 0 40px rgba(255, 255, 255, 0.7);
             animation: moonFloat 20s infinite ease-in-out;
-            z-index: 0;
-            /* FIX: Optimize for scrolling */
             will-change: transform;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
-        /* === FIXED: CLOUDS WITH BETTER PERFORMANCE === */
+        /* === CLOUDS - OPTIMIZED === */
         .cloud {
             position: absolute;
             background: rgba(136, 140, 145, 0.384);
             border-radius: 90px;
             filter: blur(5px);
-            z-index: -1;
-            /* FIX: Optimize for smooth scrolling */
-            will-change: transform;
-            -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-            /* FIX: Reduce blur on mobile for performance */
+            /* GPU acceleration for smooth animation */
+            will-change: transform, opacity;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
         }
 
-        .cloud-1 {
-            width: 150px;
-            height: 55px;
-            top: 20%;
-            animation: cloudDrift 40s infinite linear;
-        }
-
-        .cloud-2 {
-            width: 120px;
-            height: 35px;
-            top: 30%;
-            animation: cloudDrift 50s infinite linear 10s;
-        }
-
-        .cloud-3 {
-            width: 100px;
-            height: 30px;
-            top: 40%;
-            animation: cloudDrift 45s infinite linear 5s;
-        }
-
-        /* === FIXED: MOUNTAINS - MAJOR OPTIMIZATION === */
-        .mountains-container {
+        /* === MOUNTAINS - FIXED POSITION === */
+        .mountains {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
             height: 550px;
-            z-index: -1;
-            /* FIX: Enable hardware acceleration */
-            -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-            will-change: transform;
-            /* FIX: Create a new stacking context */
-            isolation: isolate;
-            overflow: hidden;
-        }
-
-        .mountains {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 550px;
             background: linear-gradient(to top, #1a1a2e, #16213e);
             clip-path: polygon(0% 100%, 2% 75%, 5% 85%, 8% 65%, 12% 90%, 16% 70%, 20% 100%, 25% 80%, 30% 95%, 35% 75%, 40% 100%, 50% 85%, 60% 100%, 65% 90%, 70% 95%, 75% 80%, 80% 100%, 85% 88%, 90% 92%, 95% 85%, 100% 100%);
-            /* FIX: Reduce paint area */
-            backface-visibility: hidden;
+            z-index: -1;
+            /* Prevent mountains from causing repaints */
+            will-change: transform;
             -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         .mountain-glow {
-            position: absolute;
+            position: fixed;
             bottom: 0;
+            left: 0;
             width: 100%;
             height: 250px;
             background: linear-gradient(to top, transparent 70%, rgba(157, 78, 221, 0.08));
             clip-path: polygon(0% 100%, 2% 75%, 5% 85%, 8% 65%, 12% 90%, 16% 70%, 20% 100%, 25% 80%, 30% 95%, 35% 75%, 40% 100%, 50% 85%, 60% 100%, 65% 90%, 70% 95%, 75% 80%, 80% 100%, 85% 88%, 90% 92%, 95% 85%, 100% 100%);
             animation: mountainPulse 30s infinite alternate;
-            z-index: 0;
-            /* FIX: Optimize animation */
+            z-index: -1;
             will-change: opacity;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         /* === MAIN CONTAINER === */
@@ -253,9 +198,8 @@
             padding: 40px 20px;
             position: relative;
             z-index: 1;
-            /* FIX: Enable hardware acceleration for smooth scrolling */
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
+            /* Create a new stacking context */
+            isolation: isolate;
         }
 
         /* === HERO SECTION === */
@@ -648,7 +592,23 @@
             opacity: 0.7;
         }
 
-        /* === FIXED: MOBILE-SPECIFIC OPTIMIZATIONS === */
+        /* === SCROLL PERFORMANCE OPTIMIZATIONS === */
+        /* All content sections get their own compositor layer */
+        section, .trust-symbol, .final-cta, .how-it-works {
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        /* Smooth scrolling container for mobile */
+        @supports (-webkit-overflow-scrolling: touch) {
+            .main-container {
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        /* === RESPONSIVE === */
         @media (max-width: 768px) {
             .logo {
                 font-size: 3rem;
@@ -698,32 +658,23 @@
                 font-size: 1.8rem;
             }
             
-            /* FIX: Mobile-specific performance optimizations */
-            .mountains-container {
-                height: 400px;
-            }
-            
+            /* Adjust mountain size on mobile */
             .mountains {
                 height: 400px;
             }
             
             .mountain-glow {
-                height: 180px;
+                height: 200px;
             }
             
-            /* FIX: Reduce blur effects on mobile for better performance */
+            /* Reduce animation complexity on mobile */
+            .star {
+                animation: none;
+                opacity: 0.5;
+            }
+            
             .cloud {
-                filter: blur(3px);
-            }
-            
-            /* FIX: Reduce animation complexity on mobile */
-            .moon {
-                animation-duration: 30s;
-            }
-            
-            /* FIX: Improve scrolling performance on mobile */
-            body {
-                -webkit-overflow-scrolling: touch;
+                animation-duration: 80s !important; /* Slower clouds on mobile */
             }
         }
 
@@ -742,11 +693,6 @@
                 gap: 15px;
             }
             
-            /* FIX: Further mobile optimizations */
-            .mountains-container {
-                height: 350px;
-            }
-            
             .mountains {
                 height: 350px;
             }
@@ -755,66 +701,30 @@
                 height: 150px;
             }
             
-            /* FIX: Reduce star count on very small devices */
+            .moon {
+                width: 60px;
+                height: 60px;
+                top: 5%;
+                right: 10%;
+            }
+        }
+
+        /* High DPI screens optimization */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
             .star {
-                display: none;
-            }
-            
-            .star:nth-child(odd) {
-                display: block;
-            }
-            
-            /* FIX: Simplify animations */
-            .cloud {
-                animation-duration: 60s !important;
-            }
-        }
-
-        /* === FIX: REDUCE MOTION PREFERENCE === */
-        @media (prefers-reduced-motion: reduce) {
-            .star,
-            .cloud,
-            .moon,
-            .mountain-glow,
-            .mailbox,
-            .mailbox-lid {
-                animation-duration: 0s !important;
-                animation-iteration-count: 1 !important;
-            }
-            
-            .trust-card:hover,
-            .topic-chip:hover,
-            .btn:hover {
-                transform: none !important;
-            }
-        }
-
-        /* === FIX: TOUCH DEVICE OPTIMIZATIONS === */
-        @media (hover: none) and (pointer: coarse) {
-            .trust-card:hover,
-            .topic-chip:hover,
-            .btn:hover {
-                transform: none !important;
-            }
-            
-            .trust-card:active,
-            .topic-chip:active,
-            .btn:active {
-                transform: translateY(-2px) !important;
+                width: 2px !important;
+                height: 2px !important;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Background Scene -->
+    <!-- Background Scene - Now properly fixed -->
     <div id="cosmic-bg">
         <div class="moon"></div>
-        <!-- Clouds will be added by JavaScript -->
-        <!-- Mountains in a separate container for better performance -->
-        <div class="mountains-container">
-            <div class="mountains"></div>
-            <div class="mountain-glow"></div>
-        </div>
+        <!-- Clouds will be added by JavaScript for better control -->
+        <div class="mountains"></div>
+        <div class="mountain-glow"></div>
     </div>
 
     <!-- Main Content -->
@@ -965,24 +875,26 @@
     </div>
 
     <script>
-        // FIXED: Optimized star generation with performance improvements
+        // Create cosmic background stars - optimized for performance
         function initCosmicBackground() {
             const bg = document.getElementById('cosmic-bg');
             const mountainHeight = 550; // Approximate height of mountains
             
-            // FIX: Reduce star count on mobile for better performance
-            const isMobile = window.innerWidth <= 768;
-            const starCount = isMobile ? 50 : 150;
+            // Create star container for better performance
+            const starContainer = document.createElement('div');
+            starContainer.style.position = 'absolute';
+            starContainer.style.top = '0';
+            starContainer.style.left = '0';
+            starContainer.style.width = '100%';
+            starContainer.style.height = '100%';
+            starContainer.style.zIndex = '-1';
             
-            // FIX: Create a document fragment to reduce DOM manipulation
-            const fragment = document.createDocumentFragment();
-            
-            for (let i = 0; i < starCount; i++) {
+            for (let i = 0; i < 120; i++) { // Reduced count for performance
                 const star = document.createElement('div');
                 star.className = 'star';
                 
                 // Set star size
-                const size = Math.random() * 3 + 1;
+                const size = Math.random() * 2 + 1; // Smaller stars for better performance
                 star.style.width = `${size}px`;
                 star.style.height = `${size}px`;
                 
@@ -995,108 +907,58 @@
                 const starTop = Math.random() * Math.min(starAreaHeight, windowHeight * 0.7);
                 
                 star.style.top = `${starTop}px`;
+                
+                // Some stars can appear on the moon too
                 star.style.opacity = Math.random() * 0.5 + 0.2;
                 star.style.animationDelay = `${Math.random() * 5}s`;
                 star.style.animationDuration = `${Math.random() * 4 + 2}s`;
-                
-                fragment.appendChild(star);
+                starContainer.appendChild(star);
             }
             
-            bg.appendChild(fragment);
+            bg.appendChild(starContainer);
         }
 
-        // FIXED: Optimized cloud initialization
+        // Create smooth flowing clouds - optimized
         function initClouds() {
             const bg = document.getElementById('cosmic-bg');
             
             // Remove any existing clouds
             document.querySelectorAll('.cloud').forEach(cloud => cloud.remove());
             
-            // FIX: Reduce cloud count on mobile
-            const isMobile = window.innerWidth <= 768;
-            const cloudCount = isMobile ? 2 : 3;
-            
+            // Create 3 clouds with different properties
             const cloudData = [
-                { width: 150, height: 55, top: '20%', duration: 40, delay: 0 },
-                { width: 120, height: 35, top: '30%', duration: 50, delay: 10 },
-                { width: 100, height: 30, top: '40%', duration: 45, delay: 5 }
+                { width: 150, height: 55, top: '20%', duration: 60, delay: 0 },
+                { width: 120, height: 35, top: '30%', duration: 75, delay: 15 },
+                { width: 100, height: 30, top: '40%', duration: 65, delay: 30 }
             ];
             
-            // FIX: Create document fragment
-            const fragment = document.createDocumentFragment();
-            
-            for (let i = 0; i < cloudCount; i++) {
-                const cloud = cloudData[i];
+            cloudData.forEach((cloud, index) => {
                 const cloudEl = document.createElement('div');
-                cloudEl.className = `cloud cloud-${i + 1}`;
+                cloudEl.className = `cloud cloud-${index + 1}`;
                 cloudEl.style.width = `${cloud.width}px`;
                 cloudEl.style.height = `${cloud.height}px`;
                 cloudEl.style.top = cloud.top;
+                cloudEl.style.animation = `cloudDrift ${cloud.duration}s infinite linear ${cloud.delay}s`;
                 
-                // FIX: Slow down animations on mobile for better performance
-                const duration = isMobile ? cloud.duration * 1.5 : cloud.duration;
-                cloudEl.style.animation = `cloudDrift ${duration}s infinite linear ${cloud.delay}s`;
-                
+                // Add some visual variation
                 cloudEl.style.backgroundColor = `rgba(136, 140, 145, ${0.3 + Math.random() * 0.2})`;
-                cloudEl.style.filter = `blur(${isMobile ? 3 : 4 + Math.random() * 3}px)`;
+                cloudEl.style.filter = `blur(${4 + Math.random() * 3}px)`;
                 
-                fragment.appendChild(cloudEl);
-            }
-            
-            bg.appendChild(fragment);
+                bg.appendChild(cloudEl);
+            });
         }
 
-        // FIXED: Debounced resize handler with performance optimizations
-        let resizeTimeout;
-        function handleResize() {
-            clearTimeout(resizeTimeout);
-            
-            // FIX: Throttle resize events for mobile performance
-            resizeTimeout = setTimeout(function() {
-                // Update mountain height based on screen size
-                const mountainsContainer = document.querySelector('.mountains-container');
-                const mountains = document.querySelector('.mountains');
-                const mountainGlow = document.querySelector('.mountain-glow');
-                
-                if (window.innerWidth <= 480) {
-                    mountainsContainer.style.height = '350px';
-                    mountains.style.height = '350px';
-                    mountainGlow.style.height = '150px';
-                } else if (window.innerWidth <= 768) {
-                    mountainsContainer.style.height = '400px';
-                    mountains.style.height = '400px';
-                    mountainGlow.style.height = '180px';
-                } else {
-                    mountainsContainer.style.height = '550px';
-                    mountains.style.height = '550px';
-                    mountainGlow.style.height = '250px';
-                }
-                
-                // Regenerate stars and clouds only if really needed
-                if (!window.resizeStarsGenerated || window.innerWidth < 768) {
-                    // Remove old stars and clouds
-                    document.querySelectorAll('.star').forEach(star => star.remove());
-                    document.querySelectorAll('.cloud').forEach(cloud => cloud.remove());
-                    
-                    initCosmicBackground();
-                    initClouds();
-                    window.resizeStarsGenerated = true;
-                }
-            }, 250);
-        }
-
-        // FIXED: Optimized scroll handling
-        let scrollTimeout;
-        function handleScroll() {
-            // Clear any existing timeout
-            clearTimeout(scrollTimeout);
-            
-            // FIX: Throttle scroll events for mobile performance
-            scrollTimeout = setTimeout(function() {
-                // Only update animations if needed
-                // For this site, we don't need to do anything on scroll
-                // The fixed background elements handle themselves
-            }, 100);
+        // Debounce function for resize events
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
         }
 
         // Initialize everything
@@ -1105,12 +967,41 @@
             initCosmicBackground();
             initClouds();
             
-            // FIX: Add optimized event listeners
-            window.addEventListener('resize', handleResize);
-            window.addEventListener('scroll', handleScroll);
+            // Handle window resize with debounce
+            const handleResize = debounce(function() {
+                // Remove old stars and clouds
+                document.querySelectorAll('.star').forEach(star => star.remove());
+                document.querySelectorAll('.cloud').forEach(cloud => cloud.remove());
+                initCosmicBackground();
+                initClouds();
+            }, 250);
             
-            // FIX: Initial mountain height setup
-            handleResize();
+            window.addEventListener('resize', handleResize);
+            
+            // Observe all sections for fade-in effect
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('section, .trust-symbol').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+
+            console.log('WhisperField — Echoes Don\'t Judge');
+            console.log('A project by skmetaverse');
             
             // Set current year in footer
             const yearSpan = document.querySelector('.copyright');
@@ -1118,7 +1009,7 @@
                 yearSpan.textContent = yearSpan.textContent.replace('2024', new Date().getFullYear());
             }
             
-            // Add click event listeners
+            // Add click event listeners for the buttons
             document.getElementById('enterBtn')?.addEventListener('click', function(e) {
                 console.log('Redirecting to WhisperField main site...');
             });
@@ -1126,15 +1017,21 @@
             document.getElementById('finalEnterBtn')?.addEventListener('click', function(e) {
                 console.log('Redirecting to WhisperField main site...');
             });
-
-            console.log('WhisperField — Echoes Don\'t Judge');
-            console.log('A project by skmetaverse');
-        });
-
-        // FIX: Clean up event listeners on page unload
-        window.addEventListener('beforeunload', function() {
-            window.removeEventListener('resize', handleResize);
-            window.removeEventListener('scroll', handleScroll);
+            
+            // Mobile performance optimizations
+            if ('ontouchstart' in window) {
+                // Reduce animation complexity on mobile
+                document.querySelectorAll('.star').forEach(star => {
+                    star.style.animation = 'none';
+                    star.style.opacity = '0.5';
+                });
+                
+                // Slower clouds on mobile for better performance
+                document.querySelectorAll('.cloud').forEach(cloud => {
+                    const currentAnimation = cloud.style.animation;
+                    cloud.style.animation = currentAnimation.replace(/\d+s/g, '80s');
+                });
+            }
         });
     </script>
 </body>
